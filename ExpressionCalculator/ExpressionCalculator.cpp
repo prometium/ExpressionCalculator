@@ -33,11 +33,11 @@ int OperationPriority(string s)
 	{
 		return 0;
 	}
-	else if (s == "*" || s == "/" || s == "mod")
+	if (s == "*" || s == "/" || s == "mod")
 	{
 		return 1;
 	}
-	else if (s == "^")
+	if (s == "^")
 	{
 		return 2;
 	}
@@ -173,95 +173,95 @@ double PerformOperation(double operand1, double operand2, string operation, cons
 	{
 		return operand1 + operand2;
 	}
-	else if (operation == "-")
+	if (operation == "-")
 	{
 		return operand1 - operand2;
 	}
-	else if (operation == "*")
+	if (operation == "*")
 	{
 		return operand1 * operand2;
 	}
-	else if (operation == "/")
+	if (operation == "/")
 	{
 		return operand1 / operand2;
 	}
-	else if (operation == "mod")
+	if (operation == "mod")
 	{
 		return fmod(operand1, operand2);
 	}
-	else if (operation == "^")
+	if (operation == "^")
 	{
 		return pow(operand1, operand2);
 	}
-	else if (operation == "sqrt")
+	if (operation == "sqrt")
 	{
 		return sqrt(operand2);
 	}
-	else if (operation == "cbrt")
+	if (operation == "cbrt")
 	{
 		return cbrt(operand2);
 	}
-	else if (operation == "log")
+	if (operation == "log")
 	{
 		return log10(operand2);
 	}
-	else if (operation == "ln")
+	if (operation == "ln")
 	{
 		return log(operand2);
 	}
-	else if (operation == "exp")
+	if (operation == "exp")
 	{
 		return exp(operand2);
 	}
-	else if (operation == "fact")
+	if (operation == "fact")
 	{
 		return tgamma(operand2 + 1.0);
 	}
-	else if (operation == "sin")
+	if (operation == "sin")
 	{
 		return angularMeasure == RAD ? sin(operand2) : sin(operand2 * M_PI / 180.0);
 	}
-	else if (operation == "cos")
+	if (operation == "cos")
 	{
 		return angularMeasure == RAD ? cos(operand2) : cos(operand2 * M_PI / 180.0);
 	}
-	else if (operation == "tan")
+	if (operation == "tan")
 	{
 		return angularMeasure == RAD ? tan(operand2) : tan(operand2 * M_PI / 180.0);
 	}
-	else if (operation == "asin")
+	if (operation == "asin")
 	{
 		return angularMeasure == RAD ? asin(operand2) : asin(operand2) * 180.0 / M_PI;
 	}
-	else if (operation == "acos")
+	if (operation == "acos")
 	{
 		return angularMeasure == RAD ? acos(operand2) : acos(operand2) * 180.0 / M_PI;
 	}
-	else if (operation == "atan")
+	if (operation == "atan")
 	{
 		return angularMeasure == RAD ? atan(operand2) : atan(operand2) * 180.0 / M_PI;
 	}
-	else if (operation == "sinh")
+	if (operation == "sinh")
 	{
 		return sinh(operand2);
 	}
-	else if (operation == "cosh")
+	if (operation == "cosh")
 	{
 		return cosh(operand2);
 	}
-	else if (operation == "tanh")
+	if (operation == "tanh")
 	{
 		return tanh(operand2);
 	}
-	else if (operation == "asinh")
+	if (operation == "asinh")
 	{
 		return asinh(operand2);
 	}
-	else if (operation == "acosh")
+	if (operation == "acosh")
 	{
 		return acosh(operand2);
 	}
-	else if (operation == "atanh")
+	if (operation == "atanh")
 	{
 		return atanh(operand2);
 	}
