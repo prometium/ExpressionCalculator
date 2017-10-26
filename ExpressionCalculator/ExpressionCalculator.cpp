@@ -1,8 +1,11 @@
-// ֳכאגםûי DLL-פאיכ.
-
-#include "stdafx.h"
+// ExpressionCalculator.cpp
 
 #include "ExpressionCalculator.h"
+
+#define _USE_MATH_DEFINES
+
+#include "string"
+#include "cmath"
 
 using std::string;
 
