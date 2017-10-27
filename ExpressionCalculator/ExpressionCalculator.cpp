@@ -165,7 +165,7 @@ Node* BuildExpressionTree(string expression)
 	return node;
 }
 
-double PerformOperation(double operand1, double operand2, string operation, const bool& angularMeasure)
+double PerformOperation(double operand1, double operand2, string operation, bool angularMeasure)
 {
 	enum { RAD, DEG };
 
@@ -268,7 +268,7 @@ double PerformOperation(double operand1, double operand2, string operation, cons
 	return 0;
 }
 
-double CalculateExpression(Node* root, const bool& angularMeasure)
+double CalculateExpression(Node* root, bool angularMeasure)
 {
 	if (!root)
 	{
@@ -286,7 +286,7 @@ double CalculateExpression(Node* root, const bool& angularMeasure)
 	return PerformOperation(leftValue, rightValue, root->value, angularMeasure);
 }
 
-double Calculate(char* inputExpression, const bool angularMeasure)
+double Calculate(char* inputExpression, bool angularMeasure)
 {
 	string expression(inputExpression);
 	Node* root = BuildExpressionTree(expression);

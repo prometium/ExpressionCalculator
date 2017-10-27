@@ -2,5 +2,4 @@
 
 #pragma once
 
-extern "C" __declspec(dllexport)
-double Calculate(char* inputExpression, bool angularMeasure);
+extern "C" __declspec(dllexport) double Calculate(char* inputExpression, bool angularMeasure);
