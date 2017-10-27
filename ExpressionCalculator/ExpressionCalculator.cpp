@@ -167,8 +167,6 @@ Node* BuildExpressionTree(string expression)
 
 double PerformOperation(double operand1, double operand2, string operation, bool angularMeasure)
 {
-	enum { RAD, DEG };
-
 	if (operation == "+")
 	{
 		return operand1 + operand2;
@@ -219,27 +217,27 @@ double PerformOperation(double operand1, double operand2, string operation, bool
 	}
 	if (operation == "sin")
 	{
-		return angularMeasure == RAD ? sin(operand2) : sin(operand2 * M_PI / 180.0);
+		return angularMeasure ? sin(operand2) : sin(operand2 * M_PI / 180.0);
 	}
 	if (operation == "cos")
 	{
-		return angularMeasure == RAD ? cos(operand2) : cos(operand2 * M_PI / 180.0);
+		return angularMeasure ? cos(operand2) : cos(operand2 * M_PI / 180.0);
 	}
 	if (operation == "tan")
 	{
-		return angularMeasure == RAD ? tan(operand2) : tan(operand2 * M_PI / 180.0);
+		return angularMeasure ? tan(operand2) : tan(operand2 * M_PI / 180.0);
 	}
 	if (operation == "asin")
 	{
-		return angularMeasure == RAD ? asin(operand2) : asin(operand2) * 180.0 / M_PI;
+		return angularMeasure ? asin(operand2) : asin(operand2) * 180.0 / M_PI;
 	}
 	if (operation == "acos")
 	{
-		return angularMeasure == RAD ? acos(operand2) : acos(operand2) * 180.0 / M_PI;
+		return angularMeasure ? acos(operand2) : acos(operand2) * 180.0 / M_PI;
 	}
 	if (operation == "atan")
 	{
-		return angularMeasure == RAD ? atan(operand2) : atan(operand2) * 180.0 / M_PI;
+		return angularMeasure ? atan(operand2) : atan(operand2) * 180.0 / M_PI;
 	}
 	if (operation == "sinh")
 	{
