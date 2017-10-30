@@ -165,7 +165,9 @@ Node* BuildExpressionTree(string expression)
 	return node;
 }
 
-double PerformOperation(double operand1, double operand2, string operation, bool angularMeasure)
+bool g_angularMeasure;
+
+double PerformOperation(double operand1, double operand2, string operation)
 {
 	if (operation == "+")
 	{
@@ -217,27 +219,27 @@ double PerformOperation(double operand1, double operand2, string operation, bool
 	}
 	if (operation == "sin")
 	{
-		return angularMeasure ? sin(operand2) : sin(operand2 * M_PI / 180.0);
+		return g_angularMeasure ? sin(operand2) : sin(operand2 * M_PI / 180.0);
 	}
 	if (operation == "cos")
 	{
-		return angularMeasure ? cos(operand2) : cos(operand2 * M_PI / 180.0);
+		return g_angularMeasure ? cos(operand2) : cos(operand2 * M_PI / 180.0);
 	}
 	if (operation == "tan")
 	{
-		return angularMeasure ? tan(operand2) : tan(operand2 * M_PI / 180.0);
+		return g_angularMeasure ? tan(operand2) : tan(operand2 * M_PI / 180.0);
 	}
 	if (operation == "asin")
 	{
-		return angularMeasure ? asin(operand2) : asin(operand2) * 180.0 / M_PI;
+		return g_angularMeasure ? asin(operand2) : asin(operand2) * 180.0 / M_PI;
 	}
 	if (operation == "acos")
 	{
-		return angularMeasure ? acos(operand2) : acos(operand2) * 180.0 / M_PI;
+		return g_angularMeasure ? acos(operand2) : acos(operand2) * 180.0 / M_PI;
 	}
 	if (operation == "atan")
 	{
-		return angularMeasure ? atan(operand2) : atan(operand2) * 180.0 / M_PI;
+		return g_angularMeasure ? atan(operand2) : atan(operand2) * 180.0 / M_PI;
 	}
 	if (operation == "sinh")
 	{
@@ -266,7 +268,7 @@ double PerformOperation(double operand1, double operand2, string operation, bool
 	return 0;
 }
 
-double CalculateExpression(Node* root, bool angularMeasure)
+double CalculateExpression(Node* root)
 {
 	if (!root)
 	{
@@ -278,18 +280,20 @@ double CalculateExpression(Node* root, bool angularMeasure)
 		return atof(root->value.c_str());
 	}
 
-	double leftValue = CalculateExpression(root->left, angularMeasure);
-	double rightValue = CalculateExpression(root->right, angularMeasure);
+	double leftValue = CalculateExpression(root->left);
+	double rightValue = CalculateExpression(root->right);
 
-	return PerformOperation(leftValue, rightValue, root->value, angularMeasure);
+	return PerformOperation(leftValue, rightValue, root->value);
 }
 
-double Calculate(char* inputExpression, bool angularMeasure)
+double Calculate(char* inputExpression, const bool angularMeasure)
 {
 	string expression(inputExpression);
 	Node* root = BuildExpressionTree(expression);
 
-	double result = CalculateExpression(root, angularMeasure);
+	g_angularMeasure = angularMeasure;
+
+	double result = CalculateExpression(root);
 
 	delete root;
 
