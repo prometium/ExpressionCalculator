@@ -9,9 +9,27 @@
 
 using std::string;
 
-bool IsBracket(char c)
+struct Node
 {
-	return c == '(' || c == ')';
+	string value;
+	Node* left;
+	Node* right;
+
+	~Node()
+	{
+		delete left;
+		delete right;
+	}
+};
+
+Node* NewNode(string value)
+{
+	Node* temp = new Node;
+
+	temp->value = value;
+	temp->left = temp->right = nullptr;
+
+	return temp;
 }
 
 bool IsArithmeticOperator(char c)
@@ -19,28 +37,24 @@ bool IsArithmeticOperator(char c)
 	return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
 }
 
+int ArithmeticOperatorPriority(char c)
+{
+	if (c == '+' || c == '-')
+	{
+		return 0;
+	}
+	if (c == '*' || c == '/')
+	{
+		return 1;
+	}
+	return 2;
+}
+
 bool IsFunction(string s)
 {
 	return s == "sqrt" || s == "cbrt" || s == "log" || s == "ln" || s == "exp" || s == "fact"
 		|| s == "sin" || s == "cos" || s == "tan" || s == "asin" || s == "acos" || s == "atan"
 		|| s == "sinh" || s == "cosh" || s == "tanh" || s == "asinh" || s == "acosh" || s == "atanh";
-}
-
-int OperationPriority(string s)
-{
-	if (s == "+" || s == "-")
-	{
-		return 0;
-	}
-	if (s == "*" || s == "/")
-	{
-		return 1;
-	}
-	if (s == "^")
-	{
-		return 2;
-	}
-	return 3;
 }
 
 void DeleteUnnecessarySideBrackets(string& expression)
@@ -73,29 +87,6 @@ void DeleteUnnecessarySideBrackets(string& expression)
 	}
 }
 
-struct Node
-{
-	string value;
-	Node* left;
-	Node* right;
-
-	~Node()
-	{
-		delete left;
-		delete right;
-	}
-};
-
-Node* NewNode(string value)
-{
-	Node* temp = new Node;
-
-	temp->value = value;
-	temp->left = temp->right = nullptr;
-
-	return temp;
-}
-
 Node* BuildExpressionTree(string expression)
 {
 	DeleteUnnecessarySideBrackets(expression);
@@ -113,9 +104,9 @@ Node* BuildExpressionTree(string expression)
 	for (size_t i = 0; i < expression.length(); i++)
 	{
 		if (IsArithmeticOperator(expression[i])
-			&& OperationPriority(string(1, expression[i])) <= minPriority && !bracketCount)
+			&& ArithmeticOperatorPriority(expression[i]) <= minPriority && !bracketCount)
 		{
-			minPriority = OperationPriority(string(1, expression[i]));
+			minPriority = ArithmeticOperatorPriority(expression[i]);
 			minPriorityOperationIndex = i;
 			minPriorityOperationLength = 1;
 		}
@@ -125,9 +116,8 @@ Node* BuildExpressionTree(string expression)
 
 			if (!isalpha(expression[i + 1]) && IsFunction(function))
 			{
-				if (OperationPriority(function) <= minPriority && !bracketCount)
+				if (!bracketCount)
 				{
-					minPriority = OperationPriority(function);
 					minPriorityOperationIndex = i;
 					minPriorityOperationLength = function.length();
 				}
@@ -160,6 +150,7 @@ Node* BuildExpressionTree(string expression)
 	return node;
 }
 
+// 0 - DEG, 1 - RAD
 bool g_angularMeasure;
 
 double PerformOperation(double operand1, double operand2, string operation)
@@ -282,7 +273,7 @@ double Calculate(char* inputExpression, const bool angularMeasure)
 	string expression(inputExpression);
 	Node* root = BuildExpressionTree(expression);
 
-	g_angularMeasure = angularMeasure;
+	g_angularMeasure = angularMeasure; 
 
 	double result = CalculateExpression(root);
 
