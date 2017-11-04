@@ -48,7 +48,6 @@ void DeleteUnnecessarySideBrackets(string& expression)
 	bool sideBracketsMustBeDeleted = 1;
 	while (expression[0] == '(' && expression[expression.length() - 1] == ')' && sideBracketsMustBeDeleted)
 	{
-		string function = "";
 		int bracketCount = 0;
 		for (size_t i = 0; i < expression.length() && sideBracketsMustBeDeleted; i++)
 		{
