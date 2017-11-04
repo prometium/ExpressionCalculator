@@ -139,7 +139,7 @@ Node* BuildExpressionTree(string expression)
 			minPriorityOperatorIndex = i;
 			minPriorityOperatorLength = 1;
 		}
-		else if (isalpha(expression[i]))
+		else if (minPriority == 3 && isalpha(expression[i]))
 		{
 			function += expression[i];
 
