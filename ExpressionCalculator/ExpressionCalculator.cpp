@@ -26,11 +26,6 @@ bool IsFunction(string s)
 		|| s == "sinh" || s == "cosh" || s == "tanh" || s == "asinh" || s == "acosh" || s == "atanh";
 }
 
-bool IsFunctionRecognized(string operation, char c)
-{
-	return !isalpha(c) && IsFunction(operation);
-}
-
 int OperationPriority(string s)
 {
 	if (s == "+" || s == "-")
@@ -60,20 +55,6 @@ void DeleteUnnecessarySideBrackets(string& expression)
 			if (IsArithmeticOperator(expression[i]) && !bracketCount)
 			{
 				sideBracketsMustBeDeleted = 0;
-			}
-			else if (isalpha(expression[i]))
-			{
-				function += expression[i];
-
-				if (IsFunctionRecognized(function, expression[i + 1]))
-				{
-					if (!bracketCount)
-					{
-						sideBracketsMustBeDeleted = 0;
-					}
-
-					function = "";
-				}
 			}
 			else if (expression[i] == '(')
 			{
@@ -143,7 +124,7 @@ Node* BuildExpressionTree(string expression)
 		{
 			function += expression[i];
 
-			if (IsFunctionRecognized(function, expression[i + 1]))
+			if (!isalpha(expression[i + 1]) && IsFunction(function))
 			{
 				if (OperationPriority(function) <= minPriority && !bracketCount)
 				{
