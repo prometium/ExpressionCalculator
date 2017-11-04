@@ -107,8 +107,8 @@ Node* BuildExpressionTree(string expression)
 
 	string function = "";
 	int minPriority = 3;
-	int minPriorityOperatorIndex = 0;
-	int minPriorityOperatorLength = 0;
+	int minPriorityOperationIndex = 0;
+	int minPriorityOperationLength = 0;
 	int bracketCount = 0;
 	for (size_t i = 0; i < expression.length(); i++)
 	{
@@ -116,8 +116,8 @@ Node* BuildExpressionTree(string expression)
 			&& OperationPriority(string(1, expression[i])) <= minPriority && !bracketCount)
 		{
 			minPriority = OperationPriority(string(1, expression[i]));
-			minPriorityOperatorIndex = i;
-			minPriorityOperatorLength = 1;
+			minPriorityOperationIndex = i;
+			minPriorityOperationLength = 1;
 		}
 		else if (isalpha(expression[i]) && minPriority == 3)
 		{
@@ -128,8 +128,8 @@ Node* BuildExpressionTree(string expression)
 				if (OperationPriority(function) <= minPriority && !bracketCount)
 				{
 					minPriority = OperationPriority(function);
-					minPriorityOperatorIndex = i;
-					minPriorityOperatorLength = function.length();
+					minPriorityOperationIndex = i;
+					minPriorityOperationLength = function.length();
 				}
 
 				function = "";
@@ -145,17 +145,17 @@ Node* BuildExpressionTree(string expression)
 		}
 	}
 
-	if (!minPriorityOperatorIndex && isdigit(expression[0]))
+	if (!minPriorityOperationIndex && isdigit(expression[0]))
 	{
 		return NewNode(expression);
 	}
 
 	Node* node = NewNode(expression.substr(
-		minPriorityOperatorIndex - minPriorityOperatorLength + 1, minPriorityOperatorLength));
+		minPriorityOperationIndex - minPriorityOperationLength + 1, minPriorityOperationLength));
 
 	node->left = BuildExpressionTree(expression.substr(
-		0, minPriorityOperatorIndex - minPriorityOperatorLength + 1));
-	node->right = BuildExpressionTree(expression.substr(minPriorityOperatorIndex + 1));
+		0, minPriorityOperationIndex - minPriorityOperationLength + 1));
+	node->right = BuildExpressionTree(expression.substr(minPriorityOperationIndex + 1));
 
 	return node;
 }
