@@ -9,22 +9,26 @@
 
 using std::string;
 
-bool IsNumber(char c)
-{
-	return '0' <= c && c <= '9';
-}
-
 bool IsBracket(char c)
 {
 	return c == '(' || c == ')';
 }
 
-bool IsOperation(string s)
+bool IsArithmeticOperator(char c)
 {
-	return s == "+" || s == "-" || s == "*" || s == "/" || s == "mod" || s == "^"
-		|| s == "sqrt" || s == "cbrt" || s == "log" || s == "ln" || s == "exp" || s == "fact"
+	return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+}
+
+bool IsFunction(string s)
+{
+	return s == "sqrt" || s == "cbrt" || s == "log" || s == "ln" || s == "exp" || s == "fact"
 		|| s == "sin" || s == "cos" || s == "tan" || s == "asin" || s == "acos" || s == "atan"
 		|| s == "sinh" || s == "cosh" || s == "tanh" || s == "asinh" || s == "acosh" || s == "atanh";
+}
+
+bool IsFunctionRecognized(string operation, char c)
+{
+	return !isalpha(c) && IsFunction(operation);
 }
 
 int OperationPriority(string s)
@@ -33,7 +37,7 @@ int OperationPriority(string s)
 	{
 		return 0;
 	}
-	if (s == "*" || s == "/" || s == "mod")
+	if (s == "*" || s == "/")
 	{
 		return 1;
 	}
@@ -49,22 +53,26 @@ void DeleteUnnecessarySideBrackets(string& expression)
 	bool sideBracketsMustBeDeleted = 1;
 	while (expression[0] == '(' && expression[expression.length() - 1] == ')' && sideBracketsMustBeDeleted)
 	{
-		string operation = "";
+		string function = "";
 		int bracketCount = 0;
 		for (size_t i = 0; i < expression.length() && sideBracketsMustBeDeleted; i++)
 		{
-			if (!IsNumber(expression[i]) && expression[i] != '.' && !IsBracket(expression[i]))
+			if (IsArithmeticOperator(expression[i]) && !bracketCount)
 			{
-				operation += expression[i];
+				sideBracketsMustBeDeleted = 0;
+			}
+			else if (isalpha(expression[i]))
+			{
+				function += expression[i];
 
-				if (IsOperation(operation) && !IsOperation(operation + expression[i + 1]))
+				if (IsFunctionRecognized(function, expression[i + 1]))
 				{
 					if (!bracketCount)
 					{
 						sideBracketsMustBeDeleted = 0;
 					}
 
-					operation = "";
+					function = "";
 				}
 			}
 			else if (expression[i] == '(')
@@ -117,27 +125,34 @@ Node* BuildExpressionTree(string expression)
 		return nullptr;
 	}
 
-	string operation = "";
+	string function = "";
 	int minPriority = 3;
 	int minPriorityOperatorIndex = 0;
 	int minPriorityOperatorLength = 0;
 	int bracketCount = 0;
 	for (size_t i = 0; i < expression.length(); i++)
 	{
-		if (!IsNumber(expression[i]) && expression[i] != '.' && !IsBracket(expression[i]))
+		if (IsArithmeticOperator(expression[i])
+			&& OperationPriority(string(1, expression[i])) <= minPriority && !bracketCount)
 		{
-			operation += expression[i];
+			minPriority = OperationPriority(string(1, expression[i]));
+			minPriorityOperatorIndex = i;
+			minPriorityOperatorLength = 1;
+		}
+		else if (isalpha(expression[i]))
+		{
+			function += expression[i];
 
-			if (IsOperation(operation) && !IsOperation(operation + expression[i + 1]))
+			if (IsFunctionRecognized(function, expression[i + 1]))
 			{
-				if (OperationPriority(operation) <= minPriority && !bracketCount)
+				if (OperationPriority(function) <= minPriority && !bracketCount)
 				{
-					minPriority = OperationPriority(operation);
+					minPriority = OperationPriority(function);
 					minPriorityOperatorIndex = i;
-					minPriorityOperatorLength = operation.length();
+					minPriorityOperatorLength = function.length();
 				}
 
-				operation = "";
+				function = "";
 			}
 		}
 		else if (expression[i] == '(')
@@ -150,7 +165,7 @@ Node* BuildExpressionTree(string expression)
 		}
 	}
 
-	if (!minPriorityOperatorIndex && IsNumber(expression[0]))
+	if (!minPriorityOperatorIndex && isdigit(expression[0]))
 	{
 		return NewNode(expression);
 	}
@@ -184,10 +199,6 @@ double PerformOperation(double operand1, double operand2, string operation)
 	if (operation == "/")
 	{
 		return operand1 / operand2;
-	}
-	if (operation == "mod")
-	{
-		return fmod(operand1, operand2);
 	}
 	if (operation == "^")
 	{
