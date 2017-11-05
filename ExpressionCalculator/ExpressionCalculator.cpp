@@ -268,10 +268,9 @@ double CalculateExpression(Node* root)
 	return PerformOperation(leftValue, rightValue, root->value);
 }
 
-double Calculate(char* inputExpression, const bool angularMeasure)
+double Calculate(char* expression, const bool angularMeasure)
 {
-	string expression(inputExpression);
-	Node* root = BuildExpressionTree(expression);
+	Node* root = BuildExpressionTree(string(expression));
 
 	g_angularMeasure = angularMeasure; 
 
