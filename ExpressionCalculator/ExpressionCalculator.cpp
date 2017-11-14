@@ -15,12 +15,14 @@ struct Node
 	Node* left;
 	Node* right;
 
-	~Node()
-	{
-		delete left;
-		delete right;
-	}
+	~Node();
 };
+
+Node::~Node()
+{
+	delete left;
+	delete right;
+}
 
 Node* NewNode(string value)
 {
