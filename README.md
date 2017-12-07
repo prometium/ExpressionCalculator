@@ -9,5 +9,3 @@ Priority|Operation
 #### Import
 [DllImport(@"ExpressionCalculator.dll", CallingConvention = CallingConvention.Cdecl)]  
 static extern double Calculate(string expression, bool angularMeasure);
-#### Annotation
-angularMeasure (0 - DEG, 1 - RAD)
