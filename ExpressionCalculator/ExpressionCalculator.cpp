@@ -2,8 +2,6 @@
 
 #include "ExpressionCalculator.h"
 
-#define _USE_MATH_DEFINES
-
 #include <string>
 #include <cmath>
 
@@ -152,9 +150,6 @@ Node* BuildExpressionTree(string expression)
 	return node;
 }
 
-// 0 - DEG, 1 - RAD
-bool g_angularMeasure;
-
 double PerformOperation(double operand1, double operand2, string operation)
 {
 	if (operation == "+")
@@ -203,27 +198,27 @@ double PerformOperation(double operand1, double operand2, string operation)
 	}
 	if (operation == "sin")
 	{
-		return g_angularMeasure ? sin(operand2) : sin(operand2 * M_PI / 180.0);
+		return sin(operand2);
 	}
 	if (operation == "cos")
 	{
-		return g_angularMeasure ? cos(operand2) : cos(operand2 * M_PI / 180.0);
+		return cos(operand2);
 	}
 	if (operation == "tan")
 	{
-		return g_angularMeasure ? tan(operand2) : tan(operand2 * M_PI / 180.0);
+		return tan(operand2);
 	}
 	if (operation == "asin")
 	{
-		return g_angularMeasure ? asin(operand2) : asin(operand2) * 180.0 / M_PI;
+		return asin(operand2);
 	}
 	if (operation == "acos")
 	{
-		return g_angularMeasure ? acos(operand2) : acos(operand2) * 180.0 / M_PI;
+		return acos(operand2);
 	}
 	if (operation == "atan")
 	{
-		return g_angularMeasure ? atan(operand2) : atan(operand2) * 180.0 / M_PI;
+		return atan(operand2);
 	}
 	if (operation == "sinh")
 	{
@@ -270,11 +265,9 @@ double CalculateExpression(Node* root)
 	return PerformOperation(leftValue, rightValue, root->value);
 }
 
-double Calculate(char* expression, const bool angularMeasure)
+double Calculate(char* expression)
 {
 	Node* root = BuildExpressionTree(string(expression));
-
-	g_angularMeasure = angularMeasure; 
 
 	double result = CalculateExpression(root);
 
